@@ -1,0 +1,29 @@
+{
+  "playbook_version": "v2026.1",
+  "lane": "Lane 2 - Content Refresh & Opportunity Scoring",
+  "total_evaluated_pages": 38698,
+  "top_50_sprint_cost_usd": 11175.0,
+  "action_breakdown": {
+    "MONITOR_STABLE": 22014,
+    "SERP_TITLE_META_FIX": 9525,
+    "REWRITE_EXPAND": 4781,
+    "REFRESH_GENERAL": 1223,
+    "EXPAND_DEPTH": 1155
+  },
+  "reason_code_breakdown": {
+    "RC_HEALTHY": 22014,
+    "RC_SERP_CTR_GAP": 9525,
+    "RC_STALE_HIGH_IMP": 4781,
+    "RC_DECAY_TRAFFIC": 1223,
+    "RC_THIN_HIGH_EXPOSURE": 1155
+  },
+  "review_tier_breakdown": {
+    "STANDARD_EDITORIAL_REVIEW": 32666,
+    "MANDATORY_SENIOR_REVIEW": 6032
+  },
+  "performance_receipts": {
+    "target_precision_at_50": 0.74,
+    "baseline_precision_at_50": 0.24,
+    "lift_multiplier": 3.08
+  }
+}
