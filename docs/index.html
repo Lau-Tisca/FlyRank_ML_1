@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<!-- Enable single $ inline math in MathJax -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -252,18 +262,24 @@
   <!-- 4. Methodology -->
   <section id="methodology">
     <h2>3. Methodology & Validation Design</h2>
+
     <h3>3.1 Label Definition & Temporal Windows</h3>
     <p>
       To prevent future-window leakage, we structure our feature extraction and label evaluation on distinct, non-overlapping temporal windows:
     </p>
+
     <ul>
       <li><strong>Feature Window ($T_{\text{feat}}$):</strong> Trailing 15 days (e.g., Days 1–15 of the evaluation partition).</li>
       <li><strong>Outcome/Label Window ($T_{\text{target}}$):</strong> Subsequent 16 days (e.g., Days 16–31).</li>
     </ul>
+
     <p>
       The target proxy label $\text{Is\_Opportunity}$ is binary, identifying pages experiencing substantial traffic decay ($&gt;20\%$ decline in organic clicks) despite holding proven search exposure:
     </p>
-    $$\text{Target} = \mathbf{1}\left(\sum_{t \in T_{\text{target}}} \text{Clicks}_t < 0.80 \times \sum_{t \in T_{\text{feat}}} \text{Clicks}_t \land \sum_{t \in T_{\text{feat}}} \text{Impressions}_t \ge 50\right)$$
+
+    <div style="margin: 1.5rem 0; overflow-x: auto; text-align: center;">
+      $$\text{Target} = \mathbf{1}\left(\sum_{t \in T_{\text{target}}} \text{Clicks}_t < 0.80 \times \sum_{t \in T_{\text{feat}}} \text{Clicks}_t \land \sum_{t \in T_{\text{feat}}} \text{Impressions}_t \ge 50\right)$$
+    </div>
 
     <h3>3.2 Feature Vector</h3>
     <p>Each feature is guaranteed knowable at the decision moment:</p>
@@ -271,7 +287,7 @@
       <li><code>log_impressions</code>: $\log(1 + \text{Impressions}_{15d})$ (Historical demand envelope).</li>
       <li><code>log_clicks</code>: $\log(1 + \text{Clicks}_{15d})$ (Pre-intervention traffic baseline).</li>
       <li><code>avg_position</code>: Mean SERP position across the feature window.</li>
-      <li><code>ctr_feature</code>: Measured click-through rate ($\text{Clicks} / \text{Impressions}$).</li>
+      <li><code>ctr_feature</code>: Measured click-through rate ($\text{Clicks} / \text{Impressions} \times 100$).</li>
       <li><code>tracking_depth_days</code>: Number of distinct active tracking dates in the period.</li>
       <li><code>ga4_sessions</code>: Log-transformed verified on-site user engagement.</li>
     </ol>
