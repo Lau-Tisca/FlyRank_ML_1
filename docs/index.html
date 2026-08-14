@@ -264,12 +264,12 @@
 
     <h3>3.1 Label Definition & Temporal Windows</h3>
     <p>
-      To prevent future-window leakage, we structure our feature extraction and label evaluation on distinct, non-overlapping temporal windows:
+      To prevent future-window look-ahead bias, we structure feature extraction and target label evaluation on distinct, non-overlapping temporal windows:
     </p>
 
     <ul>
-      <li><strong>Feature Window ($T_{\text{feat}}$):</strong> Trailing 15 days (e.g., Days 1–15 of the evaluation partition).</li>
-      <li><strong>Outcome/Label Window ($T_{\text{target}}$):</strong> Subsequent 16 days (e.g., Days 16–31).</li>
+      <li><strong>Observation / Feature Window ($T_{\text{feat}}$):</strong> Days 1–15 of the evaluation partition (March 1–15, 2026).</li>
+      <li><strong>Outcome / Target Window ($T_{\text{target}}$):</strong> Subsequent 16 days (March 16–31, 2026).</li>
     </ul>
 
     <p>
@@ -280,20 +280,24 @@
       $$\text{Target} = \mathbf{1}\left(\sum_{t \in T_{\text{target}}} \text{Clicks}_t < 0.80 \times \sum_{t \in T_{\text{feat}}} \text{Clicks}_t \land \sum_{t \in T_{\text{feat}}} \text{Impressions}_t \ge 50\right)$$
     </div>
 
-    <h3>3.2 Feature Vector</h3>
-    <p>Each feature is guaranteed knowable at the decision moment:</p>
+    <h3>3.2 Feature Vector & Leakage Hardening</h3>
+    <p>Features are strictly knowable at the Day 15 decision cutoff:</p>
     <ol>
-      <li><code>log_impressions</code>: $\log(1 + \text{Impressions}_{15d})$ (Historical demand envelope).</li>
-      <li><code>log_clicks</code>: $\log(1 + \text{Clicks}_{15d})$ (Pre-intervention traffic baseline).</li>
-      <li><code>avg_position</code>: Mean SERP position across the feature window.</li>
-      <li><code>ctr_feature</code>: Measured click-through rate ($\text{Clicks} / \text{Impressions} \times 100$).</li>
-      <li><code>tracking_depth_days</code>: Number of distinct active tracking dates in the period.</li>
-      <li><code>ga4_sessions</code>: Log-transformed verified on-site user engagement.</li>
+      <li><code>log_impressions</code>: $\log(1 + \text{Impressions}_{15d})$ (Historical demand envelope; median = 349).</li>
+      <li><code>log_clicks</code>: $\log(1 + \text{Clicks}_{15d})$ (Pre-intervention traffic baseline; median = 2).</li>
+      <li><code>avg_position</code>: Mean organic SERP position across the 15-day feature window.</li>
+      <li><code>ctr_feat</code>: Measured click-through rate ($\text{Clicks} / \text{Impressions} \times 100$).</li>
+      <li><code>log_ga4_sessions</code>: Log-transformed verified on-site user engagement.</li>
+      <li><code>feat_active_days</code>: Number of distinct active tracking dates in the period ($1 \dots 15$).</li>
     </ol>
+
+    <div class="callout">
+      <strong>Adversarial Leakage Audit:</strong> In formal leakage tests (<code>w03_feature_leakage_check.ipynb</code>), injecting an artificial future-click ratio caused model ROC AUC to spike to $0.983$. In our production matrices, temporal boundaries were verified with automated assertions ($T_{\text{feat\_max}} < T_{\text{target\_min}}$), and all post-Day-15 predictors were purged.
+    </div>
 
     <h3>3.3 Client-Grouped Validation Design</h3>
     <p>
-      Standard random k-fold splitting produces severe metric over-optimism because content items from the same domain share domain authority and indexing history. We enforce strict <strong>Client-Grouped Holdout Validation</strong>: all content items from test clients are completely quarantined during training.
+      Standard random k-fold splitting produces severe metric over-optimism because content items from the same domain share domain authority and indexing history. We enforce strict <strong>Client-Grouped Holdout Validation</strong>: 25% of unique client domains (6 holdout clients; 9,275 rows) are completely quarantined during training.
     </p>
   </section>
 
@@ -357,7 +361,7 @@
     </table>
 
     <div class="callout">
-      <strong>Key Finding:</strong> The Random Forest model achieved a <strong>Precision@50 of 0.740</strong> and <strong>ROC AUC of 0.780</strong> on the unseen client-holdout split, delivering an observed <strong>1.61&times; precision lift</strong> over the heuristic rule baseline (0.460) and a <strong>3.13&times; lift</strong> over the holdout dataset base rate (0.236). Non-linear models successfully disentangle position-CTR interaction effects that static linear rules misclassify.
+      <strong>Key Finding:</strong> The Random Forest model achieved a <strong>Precision@50 of 0.740</strong> and <strong>ROC AUC of 0.780</strong> on the unseen client-holdout split, delivering an observed <strong>1.61&times; precision lift</strong> over the heuristic rule baseline (0.460) and a <strong>3.13&times; lift</strong> over the holdout dataset base rate (0.236). Non-linear tree ensembles successfully disentangle position-CTR interaction effects that static linear rules misclassify.
     </div>
   </section>
 
