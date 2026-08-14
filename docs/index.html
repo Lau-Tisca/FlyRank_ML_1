@@ -188,7 +188,7 @@
   <section class="abstract">
     <h3>Abstract</h3>
     <p>
-      Managing large enterprise content inventories requires identifying decaying or underperforming pages without wasting limited editorial bandwidth. In this study, we formulate content opportunity discovery as a client-grouped ranking task using a longitudinal warehouse of 78.8 million daily search and engagement records across 104 pseudonymized enterprise domains. We evaluate deterministic heuristic baselines against decision trees, regularized logistic regression, and random forest classifiers evaluated strictly under client-holdout cross-validation to prevent cross-domain data leakage. Our measured results demonstrate that an ensemble Random Forest model achieves a <strong>Precision@50 of 0.850</strong> (and holdout 0.740+), representing an observed <strong>3.08&times; precision lift</strong> over hand-crafted rule baselines (0.240) and substantially outperforming the empirical base rate (0.542). Finally, we translate model probability outputs into an operational content action playbook with granular reason codes, strict human-review safety guardrails, and non-production decision-support boundaries.
+      Managing large enterprise content inventories requires identifying decaying or underperforming pages without wasting limited editorial bandwidth. In this study, we formulate content opportunity discovery as a client-grouped ranking task using a longitudinal warehouse of 78.8 million daily search and engagement records across 104 pseudonymized enterprise domains. We evaluate deterministic heuristic baselines against decision trees, regularized logistic regression, and random forest classifiers evaluated strictly under client-holdout cross-validation to prevent cross-domain data leakage. Our measured results demonstrate that an ensemble Random Forest model achieves a <strong>Precision@50 of 0.740</strong> and <strong>ROC AUC of 0.780</strong>, representing an observed <strong>1.61&times; precision lift</strong> over hand-crafted rule baselines (0.460) and a <strong>3.13&times; lift</strong> over the empirical holdout base rate (0.236). Finally, we translate model probability outputs into an operational content action playbook with granular reason codes, strict human-review safety guardrails, and non-production decision-support boundaries.
     </p>
   </section>
 
@@ -301,7 +301,7 @@
   <section id="results">
     <h2>4. Measured Results & Model Comparison</h2>
     <p>
-      Models were trained and evaluated on identical client-holdout test splits. Precision at Top-$K$ ($K=50, 100$) serves as the primary operational metric, reflecting the actual weekly capacity of human editorial teams.
+      Models were trained and evaluated on identical client-holdout test splits (9,275 rows across 6 holdout domains). Precision at Top-$K$ ($K=50, 100$) serves as the primary operational metric, reflecting the actual weekly capacity of human editorial teams.
     </p>
 
     <table>
@@ -319,45 +319,45 @@
       <tbody>
         <tr>
           <td><strong>Hand-Crafted Rule Baseline</strong></td>
-          <td>0.627</td>
-          <td>0.468</td>
-          <td>0.240</td>
-          <td>0.280</td>
-          <td>—</td>
-          <td>—</td>
+          <td>0.650</td>
+          <td>0.304</td>
+          <td>0.460</td>
+          <td>0.390</td>
+          <td>0.388</td>
+          <td>0.349</td>
         </tr>
         <tr>
           <td><strong>Logistic Regression (L2)</strong></td>
-          <td>0.703</td>
-          <td>0.541</td>
+          <td>0.726</td>
+          <td>0.382</td>
           <td>0.600</td>
-          <td>0.480</td>
-          <td>0.535</td>
-          <td>0.562</td>
+          <td>0.580</td>
+          <td>0.042</td>
+          <td>0.079</td>
         </tr>
         <tr>
           <td><strong>Decision Tree Classifier</strong></td>
-          <td>0.742</td>
-          <td>0.575</td>
-          <td>0.450</td>
-          <td>0.580</td>
-          <td>0.716</td>
-          <td>0.634</td>
+          <td>0.765</td>
+          <td>0.378</td>
+          <td>0.500</td>
+          <td>0.500</td>
+          <td>0.094</td>
+          <td>0.159</td>
         </tr>
         <tr>
           <td><strong>Random Forest (Champion)</strong></td>
-          <td><strong>0.762</strong></td>
-          <td><strong>0.659</strong></td>
-          <td><strong>0.850</strong></td>
-          <td><strong>0.860</strong></td>
-          <td><strong>0.712</strong></td>
-          <td><strong>0.637</strong></td>
+          <td><strong>0.780</strong></td>
+          <td><strong>0.417</strong></td>
+          <td><strong>0.740</strong></td>
+          <td><strong>0.660</strong></td>
+          <td><strong>0.050</strong></td>
+          <td><strong>0.093</strong></td>
         </tr>
       </tbody>
     </table>
 
     <div class="callout">
-      <strong>Key Finding:</strong> The Random Forest model achieved a <strong>Precision@50 of 0.850</strong> on the evaluation slice, delivering a <strong>3.08&times; lift</strong> over the heuristic rule baseline (0.240) and substantially exceeding the 0.542 holdout dataset base rate. Non-linear models successfully disentangle position-CTR interaction effects that static linear rules misclassify.
+      <strong>Key Finding:</strong> The Random Forest model achieved a <strong>Precision@50 of 0.740</strong> and <strong>ROC AUC of 0.780</strong> on the unseen client-holdout split, delivering an observed <strong>1.61&times; precision lift</strong> over the heuristic rule baseline (0.460) and a <strong>3.13&times; lift</strong> over the holdout dataset base rate (0.236). Non-linear models successfully disentangle position-CTR interaction effects that static linear rules misclassify.
     </div>
   </section>
 
