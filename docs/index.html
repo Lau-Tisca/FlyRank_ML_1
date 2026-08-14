@@ -273,7 +273,7 @@
     </ul>
 
     <p>
-      The target proxy label $\text{Is\_Opportunity}$ is binary, identifying pages experiencing substantial traffic decay ($&gt;20\%$ decline in organic clicks) despite holding proven search exposure:
+      The target proxy label $Is_\text{Opportunity}$ is binary, identifying pages experiencing substantial traffic decay ($&gt;20\%$ decline in organic clicks) despite holding proven search exposure:
     </p>
 
     <div style="margin: 1.5rem 0; overflow-x: auto; text-align: center;">
@@ -292,7 +292,7 @@
     </ol>
 
     <div class="callout">
-      <strong>Adversarial Leakage Audit:</strong> In formal leakage tests (<code>w03_feature_leakage_check.ipynb</code>), injecting an artificial future-click ratio caused model ROC AUC to spike to $0.983$. In our production matrices, temporal boundaries were verified with automated assertions ($T_{\text{feat\_max}} < T_{\text{target\_min}}$), and all post-Day-15 predictors were purged.
+      <strong>Adversarial Leakage Audit:</strong> In formal leakage tests (<code>w03_feature_leakage_check.ipynb</code>), injecting an artificial future-click ratio caused model ROC AUC to spike to $0.983$. In our production matrices, temporal boundaries were verified with automated assertions ($T_{\text{feat, max}} \lt T_{\text{target, min}}$), and all post-Day-15 predictors were purged.
     </div>
 
     <h3>3.3 Client-Grouped Validation Design</h3>
