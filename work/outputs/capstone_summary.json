@@ -1,0 +1,43 @@
+{
+  "dataset_release": "v20260703",
+  "total_rows_evaluated": 22123,
+  "test_holdout_clients": 6,
+  "metrics": [
+    {
+      "Model": "Baseline Rule",
+      "ROC AUC": 0.46472756419881367,
+      "Avg Precision": 0.18043317895279026,
+      "Precision@50": 0.22,
+      "Precision@100": 0.17,
+      "Recall": 0.13617886178861788,
+      "F1": 0.14872364039955605
+    },
+    {
+      "Model": "Logistic Regression",
+      "ROC AUC": 0.6710112351677567,
+      "Avg Precision": 0.32094351479938404,
+      "Precision@50": 0.6,
+      "Precision@100": 0.49,
+      "Recall": 0.17276422764227642,
+      "F1": 0.2349689011748445
+    },
+    {
+      "Model": "Decision Tree",
+      "ROC AUC": 0.672760348786694,
+      "Avg Precision": 0.30046305262169226,
+      "Precision@50": 0.36,
+      "Precision@100": 0.4,
+      "Recall": 0.35365853658536583,
+      "F1": 0.35455934793683136
+    },
+    {
+      "Model": "Random Forest",
+      "ROC AUC": 0.6946626196439261,
+      "Avg Precision": 0.358071590948897,
+      "Precision@50": 0.6,
+      "Precision@100": 0.52,
+      "Recall": 0.14329268292682926,
+      "F1": 0.22065727699530516
+    }
+  ]
+}
